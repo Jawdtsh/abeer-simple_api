@@ -37,6 +37,7 @@ class AuthController extends Controller
     public function signup(RegisterRequest $request): \Illuminate\Http\JsonResponse
     {
             $user=$this->createUser->storeUser($request);
+
             UserEvent::dispatch($user);
 
 

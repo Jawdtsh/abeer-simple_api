@@ -3,21 +3,21 @@
 namespace App\Exceptions;
 
 use App\Traits\ApiResponse;
-use http\Message;
+//use http\Message;
 use Throwable;
-use PDOException;
+//use PDOException;
 use Illuminate\Support\Arr;
-use App\Traits\ApiResponseTrait;
+//use App\Traits\ApiResponseTrait;
 use Illuminate\Database\QueryException;
-use App\Exceptions\Otp\InvalidCodeException;
+//use App\Exceptions\Otp\InvalidCodeException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+//use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+//use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -81,8 +81,14 @@ class Handler extends ExceptionHandler
         }
 
 
+//        if ($exception instanceof ValidationException) {
+//            return $this->error($exception->errors(), 422);
+//        }
+
         if ($exception instanceof ValidationException) {
-            return $this->error($exception->errors(), 422);
+            $errors = $exception->errors();
+            $errorMessage = implode(', ', array_map(fn($error) => implode(', ', $error), $errors));
+            return $this->error($errorMessage, 422);
         }
 
         if ($exception instanceof QueryException) {
